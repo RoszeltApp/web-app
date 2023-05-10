@@ -1,6 +1,7 @@
 import MainLayout from "../layouts/MainLayout";
 import CatalogPage from "../pages/CatalogPage";
 import MainPage from "../pages/MainPage";
+import PlacementPage from "../pages/PlacementPage";
 import { AppRoute } from "../types/Route";
 
 const userRoutes: AppRoute[] = [
@@ -17,6 +18,14 @@ const userRoutes: AppRoute[] = [
         exact: true,
         path: '/catalog',
         component: CatalogPage,
+        layout: MainLayout,
+        menu: true,
+    },
+    {
+        name: 'Размещение компонентов',
+        exact: true,
+        path: '/place',
+        component: PlacementPage,
         layout: MainLayout,
         menu: true,
     }

@@ -15,9 +15,9 @@ export const refresh = createAsyncThunk('refresh',
             const response = await axios.post<Tokens>(import.meta.env.VITE_API_ROOT + '/api/user/refresh', {}, {
                 headers: {
                     'Authorization': 'Bearer ' + state.auth.refresh_token,
-                    // 'Access-Control-Allow-Origin': import.meta.env.VITE_API_ROOT,
-                    // "Access-Control-Allow-Credentials": 'true',
-                    // 'Accept': 'application/json'
+                    'Access-Control-Allow-Origin': import.meta.env.VITE_API_ROOT,
+                    "Access-Control-Allow-Credentials": 'true',
+                    'Accept': 'application/json'
                 }
             })
             return response.data;

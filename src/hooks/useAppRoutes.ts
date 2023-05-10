@@ -4,6 +4,7 @@ import unAuthRoutes from "../router/unAuthRoutes"
 import userRoutes from "../router/userRoutes"
 import { AppRoute } from "../types/Route"
 import { useAppSelector } from "./redux"
+import supplierRoutes from "../router/supplieRutes"
 
 export function useAppRoutes() {
     const { isAuth } = useAppSelector(state => state.auth);
@@ -13,7 +14,7 @@ export function useAppRoutes() {
     useEffect(() => {
         if (isAuth) {
             if (user.role.id === 2) {
-                setRoutes([...routes])
+                setRoutes([...routes, ...supplierRoutes])
             }
             else {
                 setRoutes([...routes, ...userRoutes])
