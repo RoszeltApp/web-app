@@ -95,7 +95,7 @@ export default function SupplierCatalog() {
             <td>{element.product.class_id}</td>
             <td><TableInput text={element.stock.price.toString()} onChange={e => handleChange(element.product_id, 'price', e)}></TableInput></td>
             <td><TableInput text={element.stock.quantity.toString()} onChange={e => handleChange(element.product_id, 'quantity', e)}></TableInput></td>
-            <td><ActionIcon onClick={e => handleDelete(inx, element.product_id)}><IconTrash color='red'></IconTrash></ActionIcon></td>
+            <td><ActionIcon onClick={() => handleDelete(inx, element.product_id)}><IconTrash color='red'></IconTrash></ActionIcon></td>
         </tr>
     ));
 

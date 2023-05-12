@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Group, Stack, Table, TextInput, ThemeIcon, Image, ScrollArea, createStyles, rem, Button, NumberInput } from "@mantine/core";
+import { ActionIcon, Flex, Stack, Table, TextInput, ThemeIcon, Image, ScrollArea, createStyles, rem, Button, NumberInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconSquarePlus, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
@@ -91,7 +91,7 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
         <tr key={element.name + index.toString()}>
             <td><TableInput text={element.name + index.toString()} onChange={e => handleChange(index, 'name', e)}></TableInput></td>
             <td><TableInput text={element.value} onChange={e => handleChange(index, 'value', e)}></TableInput></td>
-            <td><ActionIcon onClick={e => handleDelete(index)}><IconTrash color='red'></IconTrash></ActionIcon></td>
+            <td><ActionIcon onClick={() => handleDelete(index)}><IconTrash color='red'></IconTrash></ActionIcon></td>
         </tr>
     ));
 
@@ -107,7 +107,7 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
             props: productProps
         }
         console.log(data);
-        fetching(data).then(() => addProduct()).catch((e) => {
+        fetching(data).then(() => addProduct()).catch(() => {
             form.setFieldError('article', 'Ошибка, невозможно сохранить товар')
         });
     }
