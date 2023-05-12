@@ -32,5 +32,6 @@ export function useSuppliersProducts(pageCount: number) {
         activePage,
         totalPages,
         setActivePage,
+        setData
     }
 }

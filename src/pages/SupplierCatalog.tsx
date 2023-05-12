@@ -1,24 +1,39 @@
-import { ActionIcon, Button, Container, Flex, Space, Table, TextInput, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Container, Flex, Space, Table, TextInput, useMantineTheme } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
 import { useSuppliersProducts } from '../api/suppliersProducts';
 import { useEffect } from "react";
+import TableInput from "../components/UI/TableInput/TableInput";
 
 
 export default function SupplierCatalog() {
     const theme = useMantineTheme();
-    const { data, fetchSuppliersProducts } = useSuppliersProducts(10);
+    const { data, fetchSuppliersProducts, setData } = useSuppliersProducts(10);
 
     useEffect(() => {
         fetchSuppliersProducts();
     }, [])
 
+    const handleChange = (id: number, filed: string, value: string) => {
+        switch (filed) {
+            case 'name':
+                let buffer = data.data;
+                buffer[id].product = { ...buffer[id].product, name: value }
+                break;
+            case 'price':
+                break;
+            case 'quantity':
+                break;
+        }
+        //setData()
+    }
+
     const rows = data.data.map((element) => (
         <tr key={element.product.article}>
             <td>{element.product.article}</td>
-            <td>{element.product.name}</td>
+            <td><TableInput text={element.product.name} onChange={e => console.log(e)}></TableInput></td>
             <td>{element.product.class_id}</td>
-            <td>{element.stock.price}</td>
-            <td>{element.stock.quantity}</td>
+            <td><TableInput text={element.stock.price.toString()} onChange={e => console.log(e, element.product.article)}></TableInput></td>
+            <td><TableInput text={element.stock.quantity.toString()} onChange={e => console.log(e)}></TableInput></td>
         </tr>
     ));
 
