@@ -1,5 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
 import MainPage from "../pages/MainPage";
+import ProductCardPage from "../pages/ProductCardPage";
 import SupplierCatalog from "../pages/SupplierCatalog";
 import { AppRoute } from "../types/Route";
 
@@ -20,6 +21,14 @@ const supplierRoutes: AppRoute[] = [
         component: SupplierCatalog,
         layout: MainLayout,
         menu: true,
+    },
+    {
+        name: 'product',
+        exact: true,
+        path: '/product/:id',
+        component: ProductCardPage,
+        layout: MainLayout,
+        menu: false
     }
 ]
 

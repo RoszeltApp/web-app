@@ -12,7 +12,8 @@ import { Error404 } from './pages/Error404'
 import { setRefreshToken } from './stores/reducers/AuthReducer'
 
 import { Tokens } from './types/TokenType'
-import { useAppRoutes } from './hooks/useAppRoutes'
+import { useAppRoutes } from './hooks/useAppRoutes';
+import { Notifications } from '@mantine/notifications';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+                <Notifications />
                 <BrowserRouter>
                     {
                         isLoading ? <div>Загрузка</div> :
@@ -78,6 +80,7 @@ function App() {
                     }
 
                 </BrowserRouter>
+
             </MantineProvider>
         </ColorSchemeProvider>
     )

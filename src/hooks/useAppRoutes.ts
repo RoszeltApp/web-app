@@ -13,7 +13,7 @@ export function useAppRoutes() {
     const [mainRoutes, setRoutes] = useState<AppRoute[]>([...routes, ...unAuthRoutes])
     useEffect(() => {
         if (isAuth) {
-            if (user.role.id === 2) {
+            if (user.role.id === 1) {
                 setRoutes([...routes, ...supplierRoutes])
             }
             else {

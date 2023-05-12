@@ -48,3 +48,8 @@ export type SupplierProductResponse = {
     total_count: number,
     data: SupplierProduct[],
 }
+
+export type ProductProps = {
+    name: string,
+    value: string,
+}

@@ -1,16 +1,19 @@
 import { useState } from "react";
 
 
-export function useFetching<T>(callback: () => Promise<T>) {
+export function useFetching<T>(callback: (...args: any[]) => Promise<T>) {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const fetching = async () => {
+    const fetching = async (...args: any[]) => {
         try {
             setLoading(true);
-            await callback()
+            await callback(...args)
         } catch (e: any) {
             setError(e.message);
+            console.log(e)
+            throw new Error(e.message);
+
         } finally {
             setLoading(false);
         }

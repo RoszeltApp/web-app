@@ -2,6 +2,7 @@ import MainLayout from "../layouts/MainLayout";
 import CatalogPage from "../pages/CatalogPage";
 import MainPage from "../pages/MainPage";
 import PlacementPage from "../pages/PlacementPage";
+import ProductCardPage from "../pages/ProductCardPage";
 import { AppRoute } from "../types/Route";
 
 const userRoutes: AppRoute[] = [
@@ -28,6 +29,14 @@ const userRoutes: AppRoute[] = [
         component: PlacementPage,
         layout: MainLayout,
         menu: true,
+    },
+    {
+        name: 'product',
+        exact: true,
+        path: '/product/:id',
+        component: ProductCardPage,
+        layout: MainLayout,
+        menu: false
     }
 ]
 
