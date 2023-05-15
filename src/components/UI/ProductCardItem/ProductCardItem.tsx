@@ -8,6 +8,14 @@ interface FormatProps {
     product: Product
 }
 
+function getImageScr(image: string | null) {
+    if (image) {
+        return `http://127.0.0.1:9000/testbucket/${image}`
+    }
+    else {
+        return `http://127.0.0.1:9000/testbucket/default.jpg`
+    }
+}
 
 export default function ProductCardItem({ product }: FormatProps) {
     const slides = product.mapping.map((offer) => (
@@ -15,9 +23,10 @@ export default function ProductCardItem({ product }: FormatProps) {
             <Card shadow="sm" padding="lg" radius="md" withBorder h={350}>
                 <Card.Section component="a" >
                     <Image
-                        src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                        src={getImageScr(offer.image)}
                         height={160}
                         alt="Norway"
+                        fit="fill"
                     />
                 </Card.Section>
 

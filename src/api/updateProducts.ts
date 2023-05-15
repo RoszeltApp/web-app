@@ -24,6 +24,8 @@ export function useUpdateProducts() {
         })
 
         console.log(response);
+
+        return response;
     }
 
     const { fetching, isLoading, error } = useFetching(fetch);

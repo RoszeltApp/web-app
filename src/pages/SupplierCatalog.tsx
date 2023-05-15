@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SupplierCatalog() {
     const theme = useMantineTheme();
-    const { data, fetchSuppliersProducts, setData, activePage, totalPages, setActivePage, suppliersProductsIsLoading } = useSuppliersProducts(20);
+    const { data, fetchSuppliersProducts, setData, activePage, totalPages, setActivePage, suppliersProductsIsLoading, query_string, setQuery } = useSuppliersProducts(20);
 
     const { fetching: update } = useUpdateProducts();
     const router = useNavigate()
@@ -115,13 +115,14 @@ export default function SupplierCatalog() {
                 <Flex align={'center'} direction="row" gap='md'>
 
                     <TextInput placeholder='Search'
-
+                        value={query_string}
+                        onChange={e => setQuery(e.target.value)}
                         radius='xl'
                         size='md'
                         w={'100%'}
                         icon={<IconSearch size="1.1rem" stroke={1.5} />}
                         rightSection={
-                            <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled">
+                            <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled" onClick={fetchSuppliersProducts}>
                                 {theme.dir === 'ltr' ? (
                                     <IconArrowRight size="1.1rem" stroke={1.5} />
                                 ) : (

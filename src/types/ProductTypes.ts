@@ -2,6 +2,7 @@ export type Offer = {
     user_id: number,
     product_id: number,
     id: number,
+    image: string | null,
     user: {
         id: number,
         name: string
@@ -19,6 +20,7 @@ export type Product = {
     article: string,
     id: number,
     class_id: number | null,
+    brand: string | null,
     mapping: Offer[]
 }
 
@@ -52,4 +54,17 @@ export type SupplierProductResponse = {
 export type ProductProps = {
     name: string,
     value: string,
+}
+
+
+export type UploadInfo = {
+    article: string,
+    id: number
+}
+
+
+export type UploadProductResponse = {
+    download_products: number,
+    products_failed: string[],
+    success_products: UploadInfo[],
 }

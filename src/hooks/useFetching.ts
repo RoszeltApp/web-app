@@ -8,7 +8,9 @@ export function useFetching<T>(callback: (...args: any[]) => Promise<T>) {
     const fetching = async (...args: any[]) => {
         try {
             setLoading(true);
-            await callback(...args)
+            const response = await callback(...args)
+            return response;
+
         } catch (e: any) {
             setError(e.message);
             console.log(e)

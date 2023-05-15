@@ -1,39 +1,16 @@
-import { ActionIcon, Flex, Stack, Table, TextInput, ThemeIcon, Image, ScrollArea, createStyles, rem, Button, NumberInput } from "@mantine/core";
+import {
+    ActionIcon, Flex, Stack, Table, TextInput, ThemeIcon,
+    ScrollArea, Button, NumberInput, FileButton, Group, Text, List, Title, Divider
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconSquarePlus, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { ProductProps } from "../../types/ProductTypes";
 import TableInput from "../UI/TableInput/TableInput";
 import { useUploadProduct } from "../../api/uploadProduct";
+import { useUploadGallery } from "../../api/uploadGallery";
+import { useUploadPreview } from "../../api/uploadPreview";
 
-
-
-const useStyles = createStyles((theme) => ({
-    header: {
-        position: 'sticky',
-        top: 0,
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-        transition: 'box-shadow 150ms ease',
-
-        '&::after': {
-            content: '""',
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderBottom: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-                }`,
-        },
-    },
-
-    block: {
-
-    },
-
-    scrolled: {
-        boxShadow: theme.shadows.sm,
-    },
-}));
 
 type FormType = {
     name: string,
@@ -44,8 +21,6 @@ type FormType = {
 }
 
 export default function AddFileForm({ addProduct }: { addProduct: () => void }) {
-
-    const { classes, cx } = useStyles();
 
     const form = useForm({
         initialValues: {
@@ -64,6 +39,9 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
 
 
     const [productProps, setProductProps] = useState<ProductProps[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
+    const [main_image, setMainImage] = useState<File | null>(null);
+
 
     const handleChange = (index: number, field: string, value: string) => {
         let buffer = [...productProps]
@@ -95,8 +73,9 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
         </tr>
     ));
 
-    const [scrolled, setScrolled] = useState(false);
     const { fetching } = useUploadProduct()
+    const { uploadGallery } = useUploadGallery();
+    const { uploadPreview } = useUploadPreview()
 
     const handleSubmit = (value: FormType) => {
         const data = {
@@ -104,10 +83,23 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
             article: value.article,
             price: value.price,
             quantity: value.quantity,
-            props: productProps
+            props: productProps,
+            brand: value.brand
         }
         console.log(data);
-        fetching(data).then(() => addProduct()).catch(() => {
+        fetching(data).then((response) => {
+            addProduct();
+            const prod_id = response.data.success_products[0].id;
+            uploadGallery(prod_id, files).then((response) => {
+                console.log('Ura', response)
+            }).catch((e) => {
+                console.log('bad', e);
+            })
+            if (main_image)
+                uploadPreview(prod_id, main_image).then(() => console.log('Yews')).catch((e) => console.log(e));
+
+
+        }).catch(() => {
             form.setFieldError('article', 'Ошибка, невозможно сохранить товар')
         });
     }
@@ -122,10 +114,19 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
                     wrap="nowrap">
 
                     <Stack justify="flex-start" w='100%'>
-                        <Image src='https://images.unsplash.com/photo-1618359057154-e21ae64350b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80'
-                            height={200}>
-                        </Image>
+                        <Title order={3}>Изображение карточки</Title>
+                        <Group position="center">
+                            <FileButton onChange={setMainImage} accept="image/png,image/jpeg">
+                                {(props) => <Button {...props}>Загрузка</Button>}
+                            </FileButton>
+                        </Group>
 
+                        {main_image && (
+                            <Text size="sm" align="center" mt="sm">
+                                Picked file: {main_image.name}
+                            </Text>
+                        )}
+                        <Divider my="sm" />
                         <TextInput
                             placeholder="Название товара"
                             label="Название товара"
@@ -166,9 +167,9 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
                     </Stack>
 
                     <Stack justify="flex-start" w='100%'>
-                        <ScrollArea h={540} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+                        <ScrollArea h={300} >
                             <Table highlightOnHover captionSide="bottom" verticalSpacing="sm" >
-                                <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+                                <thead >
                                     <tr>
                                         <th>Название</th>
                                         <th>Значение</th>
@@ -180,7 +181,26 @@ export default function AddFileForm({ addProduct }: { addProduct: () => void }) 
                                 </tbody>
                             </Table>
                         </ScrollArea>
+
                         <ActionIcon variant="subtle" onClick={handleAppend}><ThemeIcon><IconSquarePlus /></ThemeIcon></ActionIcon>
+                        <Group position="center">
+                            <FileButton onChange={setFiles} accept="image/png,image/jpeg" multiple>
+                                {(props) => <Button {...props}>Загрузка галереи</Button>}
+                            </FileButton>
+                        </Group>
+
+                        {files.length > 0 && (
+                            <Text size="sm" mt="sm">
+                                Picked files:
+                            </Text>
+                        )}
+                        <ScrollArea h={150} >
+                            <List size="sm" mt={5} withPadding>
+                                {files.map((file, index) => (
+                                    <List.Item key={index}>{file.name}</List.Item>
+                                ))}
+                            </List>
+                        </ScrollArea>
                     </Stack>
                 </Flex>
                 <Button type="submit">Сохранить</Button>

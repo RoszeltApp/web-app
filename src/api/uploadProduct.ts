@@ -1,4 +1,4 @@
-import { ProductProps } from '../types/ProductTypes'
+import { ProductProps, UploadProductResponse } from '../types/ProductTypes'
 import api from './api'
 import { useFetching } from '../hooks/useFetching'
 
@@ -15,8 +15,9 @@ type UploadProductType = {
 export function useUploadProduct() {
 
     const fetch = async (data: UploadProductType) => {
-        const response = await api.post('/api/product/upload_products', [data]);
+        const response = await api.post<UploadProductResponse>('/api/product/upload_products', [data]);
         console.log(response);
+        return response;
     }
 
     const { fetching, isLoading, error } = useFetching(fetch);
