@@ -75,7 +75,7 @@ export default function AccountHeaderMenu() {
             <Menu.Dropdown>
                 <Menu.Item
                     icon={<IconBasket size="0.9rem" color={theme.colors.red[6]} stroke={1.5} />}
-                >
+                    onClick={() => route("/basket")}>
                     Корзина
                 </Menu.Item>
 

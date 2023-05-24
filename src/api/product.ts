@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ProductResponse } from "../types/ProductTypes";
+import { Product } from "../types/ProductCardTypes";
 import { useFetching } from "../hooks/useFetching";
 import api from "./api";
 
@@ -54,4 +55,32 @@ export function useProduct(pageCount: number) {
         price_min,
         setPriceMin,
     };
+}
+
+export function useCard(product_id: string) {
+    const initialState: Product = {
+        name: "default",
+        article: "10000000",
+        id: -1,
+        class_id: null,
+        brand: "default",
+        mapping: []
+    }
+    const [data, setData] = useState(initialState);
+    const fetchCard = async () => {
+
+    let params: any = {
+        product_id: product_id,
+    }
+           const response = await api.get<Product>('/api/product/card', {
+            params
+        });
+        
+        console.log(response)
+        setData(response.data)
+    }
+
+    const { fetching, isLoading, error } = useFetching(fetchCard)
+
+    return { fetching, isLoading, error, data };
 }

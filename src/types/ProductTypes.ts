@@ -1,18 +1,4 @@
-export type Offer = {
-    user_id: number,
-    product_id: number,
-    id: number,
-    image: string | null,
-    user: {
-        id: number,
-        name: string
-    },
-    stock: {
-        quantity: number,
-        price: number,
-        id: number
-    }
-}
+import { Offer } from './ProductCardTypes';
 
 
 export type Product = {

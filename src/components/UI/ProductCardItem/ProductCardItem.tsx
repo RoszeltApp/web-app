@@ -1,7 +1,8 @@
 import { Carousel } from '@mantine/carousel'
 import { Badge, Button, Card, Group, Text, Image, Paper, Stack } from '@mantine/core'
-import { Product } from '../../../types/ProductTypes';
 import { IconBasket } from '@tabler/icons-react';
+import { addToDB } from '../../../hooks/indexedDB';
+import { Offer, Product } from '../../../types/ProductCardTypes';
 
 
 interface FormatProps {
@@ -18,6 +19,21 @@ function getImageScr(image: string | null) {
 }
 
 export default function ProductCardItem({ product }: FormatProps) {
+
+    const handleAddToBasket = (offer: Offer) => {
+        if (offer) {
+            const selectedProduct = { ...product, mapping: [offer], id: offer.id };
+
+            addToDB(selectedProduct)
+                .then(() => {
+                    console.log("Продукт успешно добавлен в IndexedDB");
+                })
+                .catch((error) => {
+                    console.error("Ошибка при добавлении продукта в IndexedDB:", error);
+                });
+        }
+    };
+
     const slides = product.mapping.map((offer) => (
         <Carousel.Slide key={offer.id}>
             <Card shadow="sm" padding="lg" radius="md" withBorder h={350}>
@@ -48,7 +64,7 @@ export default function ProductCardItem({ product }: FormatProps) {
                         </Text>
                     </div>
 
-                    <Button radius="xl" leftIcon={<IconBasket ></IconBasket>}>
+                    <Button radius="xl" leftIcon={<IconBasket ></IconBasket>} onClick={() => handleAddToBasket(offer)}>
                         Добавить
                     </Button>
                 </Stack>

@@ -31,7 +31,6 @@ export default function CatalogPage() {
 
     const [counter, update] = useState(0);
 
-
     useEffect(() => {
         fetchCatalog();
         fetchSupplierList();

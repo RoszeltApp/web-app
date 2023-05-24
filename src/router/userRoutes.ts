@@ -3,6 +3,7 @@ import CatalogPage from "../pages/CatalogPage";
 import MainPage from "../pages/MainPage";
 import PlacementPage from "../pages/PlacementPage";
 import ProductCardPage from "../pages/ProductCardPage";
+import ProductBasketPage from "../pages/ProductsBacketPage";
 import { AppRoute } from "../types/Route";
 
 const userRoutes: AppRoute[] = [
@@ -37,6 +38,14 @@ const userRoutes: AppRoute[] = [
         component: ProductCardPage,
         layout: MainLayout,
         menu: false
+    },
+    {
+        name: 'Корзина',
+        exact: true,
+        path: '/basket',
+        component: ProductBasketPage,
+        layout: MainLayout,
+        menu: false,
     }
 ]
 
