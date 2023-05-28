@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import type { Offer } from '../../../types/ProductCardTypes';
-import { ActionIcon, Button, Divider, Flex, Group, Image, NumberInput, NumberInputHandlers, Stack, Text, rem, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Flex, Group, Image, NumberInput, NumberInputHandlers, Stack, Text, rem, useMantineTheme } from "@mantine/core";
 
 interface FormatProps {
     name: string,

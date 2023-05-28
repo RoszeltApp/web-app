@@ -3,6 +3,7 @@ import { Badge, Button, Card, Group, Text, Image, Paper, Stack } from '@mantine/
 import { IconBasket } from '@tabler/icons-react';
 import { addToDB } from '../../../hooks/indexedDB';
 import { Offer, Product } from '../../../types/ProductCardTypes';
+import { notifications } from '@mantine/notifications';
 
 
 interface FormatProps {
@@ -23,10 +24,16 @@ export default function ProductCardItem({ product }: FormatProps) {
     const handleAddToBasket = (offer: Offer) => {
         if (offer) {
             const selectedProduct = { ...product, mapping: [offer], id: offer.id };
-
             addToDB(selectedProduct)
                 .then(() => {
-                    console.log("Продукт успешно добавлен в IndexedDB");
+                    console.log("Продукт успешно добавлен в IndexedDB")
+
+                    notifications.show({
+                        id: 'successful-busket-add',
+                        title: "Успешно",
+                        message: 'Продукт добавлен в корзину',
+                        color: 'green',
+                    })
                 })
                 .catch((error) => {
                     console.error("Ошибка при добавлении продукта в IndexedDB:", error);

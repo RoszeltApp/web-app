@@ -1,9 +1,10 @@
-import { Button, Container, Divider, Flex, Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Button, Container, Divider, Flex, Text, useMantineTheme } from "@mantine/core";
 import { useEffect, useState } from "react";
 import ProductCardMini from "../components/UI/ProductCardMini/ProductCardMini";
 import { deleteFromDB, getAllFromDB } from "../hooks/indexedDB.ts";
-import { Offer, Product } from "../types/ProductCardTypes.ts";
+import { Product } from "../types/ProductCardTypes.ts";
 import React from "react";
+import { useNavigate } from "react-router";
 
 interface ProductBasket extends Product {
     value: number | ''
@@ -12,6 +13,7 @@ export default function ProductBasketPage() {
     const [products, setProducts] = useState<ProductBasket[]>([]);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const router = useNavigate()
 
     const theme = useMantineTheme();
 
@@ -101,7 +103,7 @@ export default function ProductBasketPage() {
                             <Text c={"grey"} fw={400}>{totalQuantity} шт. товаров</Text>
                             <Text c={theme.primaryColor} fw={500}>{totalPrice} ₽</Text>
                         </Flex>
-                        <Button variant="outline">Разместить</Button>
+                        <Button variant="outline" onClick={() => router(`/place`)}>Разместить</Button>
                     </Flex>
                 </Flex>
             </Container>
