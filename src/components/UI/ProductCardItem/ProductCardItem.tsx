@@ -10,7 +10,7 @@ interface FormatProps {
     product: Product
 }
 
-function getImageScr(image: string | null) {
+export function getImageScr(image: string | null) {
     if (image) {
         return `http://127.0.0.1:9000/testbucket/${image}`
     }

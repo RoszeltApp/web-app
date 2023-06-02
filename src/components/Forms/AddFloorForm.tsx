@@ -1,19 +1,11 @@
-import { Button, FileButton, Flex, TextInput, Text, NativeSelect } from "@mantine/core";
+import { Button, FileButton, Flex, TextInput, Text, NativeSelect, Select, ScrollArea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { SetStateAction, useEffect, useState } from "react";
 import { useAddFloor } from "../../api/floors";
 import { useBuildingsList } from "../../api/buildings";
 
 interface FormType {
-    doors: string,
-    windows: string,
-    foundation: string,
-    walls_outer: string,
     build_id: number,
-    auditories: string,
-    stairs: string,
-    Pol: string,
-    walls_inter: string,
     name: string,
 }
 
@@ -57,15 +49,8 @@ export default function AddFloorForm({ onSubmit }: { onSubmit: () => void }) {
     const { fetching, isLoading, error } = useAddFloor()
     const { buildings, setBuildings, fetching: fetchPlacements, isLoading: isBuildingsLoading } = useBuildingsList();
 
-    const [selectedBuilding, setBuilding] = useState<number>(0);
+    const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
 
-    const filterBuildingByName = (build_name: string) => {
-        const filteredBuildings = buildings.filter(building => building.name === build_name);
-        if (filteredBuildings.length > 0) {
-            return filteredBuildings[0].id;
-        }
-        return 0;
-    };
 
     useEffect(() => {
         console.log(auditory)
@@ -73,26 +58,19 @@ export default function AddFloorForm({ onSubmit }: { onSubmit: () => void }) {
 
     useEffect(() => {
         fetchPlacements();
-        if (buildings.length > 0) {
-            setBuilding(buildings[0].id);
-        }
     }, []);
+
+    useEffect(() => {
+        if (buildings.length > 0) {
+            setSelectedBuilding(buildings[0].id.toString());
+        }
+    }, [buildings])
 
     const form = useForm({
         initialValues: {
             name: '',
-            doors: '',
-            windows: '',
-            foundation: '',
-            walls_outer: '',
-            build_id: selectedBuilding,
-            auditories: '',
-            stairs: '',
-            Pol: '',
-            walls_inter: '',
         },
         validate: {
-            build_id: (value) => (value === 0 ? "Поле должно быть выбрано" : null),
             name: (value) => (value.length === 0 ? "Поле должно быть заполнено" : null),
         }
     })
@@ -100,22 +78,23 @@ export default function AddFloorForm({ onSubmit }: { onSubmit: () => void }) {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (form.isValid()) {
-            const data = {
-                doors: form.values.doors,
-                windows: form.values.windows,
-                foundation: form.values.foundation,
-                walls_outer: form.values.walls_outer,
-                build_id: form.values.build_id,
-                auditories: form.values.auditories,
-                stairs: form.values.stairs,
-                Pol: form.values.Pol,
-                walls_inter: form.values.walls_inter,
-                name: form.values.name,
-            };
-            fetching(data).then(() => {
-                console.log(data);
-                onSubmit();
-            });
+            if (selectedBuilding) {
+
+                fetching(form.values.name,
+                    selectedBuilding,
+                    auditory,
+                    door,
+                    stair,
+                    window,
+                    Pol,
+                    foundation,
+                    innerWall,
+                    outerWall).then(() => {
+                        onSubmit();
+                    });
+            } else {
+                form.setFieldError('name', 'Выберите помещение')
+            }
         }
     };
 
@@ -130,7 +109,14 @@ export default function AddFloorForm({ onSubmit }: { onSubmit: () => void }) {
                 />
                 <Flex direction={"column"} gap={"xs"}>
                     <Text fz="sm" fw={500}>Помещение</Text>
-                    <NativeSelect data={buildings.map((building) => building.name)} onChange={(event) => setBuilding(filterBuildingByName(event.currentTarget.value))}></NativeSelect>
+                    <Select data={[...buildings].map(build => {
+                        return { value: build.id.toString(), label: build.name }
+                    })}
+                        w={"250px"}
+                        value={selectedBuilding}
+                        onChange={setSelectedBuilding}>
+
+                    </Select>
                 </Flex>
                 <LoadFileElement title="Аудитории" state={auditory} setState={setAuditory} />
                 <LoadFileElement title="Двери" state={door} setState={setDoor} />

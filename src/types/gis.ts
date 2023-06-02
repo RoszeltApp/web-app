@@ -36,3 +36,34 @@ export type FloorResponse = {
     walls_inter: string,
     name: string,
 }
+
+export type ComponentLayerResponse = {
+    floor_id: number,
+    product_offer_id: number,
+    long: number,
+    id: number,
+    lat: number,
+    product_offer: {
+        user_id: number,
+        product_id: number,
+        id: number,
+        image: string,
+        stock: {
+            quantity: number,
+            price: number,
+            id: number
+        },
+        product: {
+            id: number,
+            brand: string,
+            name: string,
+            article: string,
+            class_id: number,
+            class_product: {
+                id: number,
+                class_icon: string,
+                name: string,
+            }
+        }
+    }
+}
