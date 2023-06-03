@@ -1,9 +1,10 @@
 import { Carousel } from '@mantine/carousel'
 import { Badge, Button, Card, Group, Text, Image, Paper, Stack } from '@mantine/core'
-import { IconBasket } from '@tabler/icons-react';
+import { IconBasket, IconExternalLink } from '@tabler/icons-react';
 import { addToDB } from '../../../hooks/indexedDB';
 import { Offer, Product } from '../../../types/ProductCardTypes';
 import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 
 interface FormatProps {
@@ -40,11 +41,12 @@ export default function ProductCardItem({ product }: FormatProps) {
                 });
         }
     };
+    const router = useNavigate()
 
     const slides = product.mapping.map((offer) => (
         <Carousel.Slide key={offer.id}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder h={350}>
-                <Card.Section component="a" >
+            <Card shadow="sm" padding="lg" radius="md" withBorder h={400}>
+                <Card.Section component="a">
                     <Image
                         src={getImageScr(offer.image)}
                         height={160}
@@ -73,6 +75,11 @@ export default function ProductCardItem({ product }: FormatProps) {
 
                     <Button radius="xl" leftIcon={<IconBasket ></IconBasket>} onClick={() => handleAddToBasket(offer)}>
                         Добавить
+                    </Button>
+                    <Button radius='xl'
+                        onClick={() => router(`/product/${offer.product_id}`)}
+                        leftIcon={<IconExternalLink></IconExternalLink>}>
+                        Посмотреть
                     </Button>
                 </Stack>
             </Card>

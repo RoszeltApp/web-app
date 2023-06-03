@@ -1,13 +1,9 @@
-import { Button, FileButton, Flex, TextInput, Text, NativeSelect, Select, ScrollArea } from "@mantine/core";
+import { Button, FileButton, Flex, TextInput, Text, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { SetStateAction, useEffect, useState } from "react";
 import { useAddFloor } from "../../api/floors";
 import { useBuildingsList } from "../../api/buildings";
 
-interface FormType {
-    build_id: number,
-    name: string,
-}
 
 interface LoadFileProps {
     title: string,
@@ -46,8 +42,8 @@ export default function AddFloorForm({ onSubmit }: { onSubmit: () => void }) {
     const [innerWall, setInnerWall] = useState<File | null>(null);
     const [outerWall, setOuterWall] = useState<File | null>(null);
 
-    const { fetching, isLoading, error } = useAddFloor()
-    const { buildings, setBuildings, fetching: fetchPlacements, isLoading: isBuildingsLoading } = useBuildingsList();
+    const { fetching } = useAddFloor()
+    const { buildings, fetching: fetchPlacements } = useBuildingsList();
 
     const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
 

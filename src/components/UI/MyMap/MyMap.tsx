@@ -4,8 +4,13 @@ import ReactMapGL, { Layer, MapLayerMouseEvent, Marker, Popup, Source } from 're
 import { ComponentLayerResponse, FloorResponse } from '../../../types/gis';
 import { usePoligoneLayer } from '../../../api/poligonLayer';
 import { useComponentsLayer } from '../../../api/componentsLayer';
-import { Badge, Button, Card, Group, Image, Stack, Text, Title } from '@mantine/core';
-import { IconDevicesPc, IconTrash } from '@tabler/icons-react';
+import { Badge, Button, Card, Group, Image, ScrollArea, Stack, Text, Title } from '@mantine/core';
+import {
+    IconDevicesPc, IconTrash,
+    IconRouter, IconDatabase,
+    IconDeviceLaptop, IconDeviceDesktopAnalytics,
+    IconPrinter, IconDeviceImac, IconSlideshow
+} from '@tabler/icons-react';
 import { getImageScr } from '../ProductCardItem/ProductCardItem';
 import { notifications } from '@mantine/notifications';
 
@@ -100,6 +105,12 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
             })
         }
     }
+    const components = {
+        IconDevicesPc, IconTrash,
+        IconRouter, IconDatabase,
+        IconDeviceLaptop, IconDeviceDesktopAnalytics,
+        IconPrinter, IconDeviceImac, IconSlideshow
+    }
 
     return (
         <div style={{ width: '100%', height: '100%' }}>
@@ -152,13 +163,18 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
                 )}
 
                 {selectedFloor && compList.length !== 0 && (
-                    compList.map((mark) => (
-                        <Marker latitude={mark.lat} longitude={mark.long} key={mark.id} onClick={() => setSelectedMark(mark)}>
-                            <Button variant='Subtle'>
-                                <IconDevicesPc></IconDevicesPc>
-                            </Button>
-                        </Marker>
-                    ))
+                    compList.map((Mark) => {
+                        const CustomTag = components[Mark.product_offer.product.class_product.class_icon];
+                        return (
+                            <Marker latitude={Mark.lat} longitude={Mark.long} key={Mark.id} onClick={() => setSelectedMark(Mark)}>
+                                <Button variant='Subtle'>
+                                    <CustomTag></CustomTag>
+
+                                </Button>
+                            </Marker>
+                        )
+                    })
+
                 )}
 
                 {selectedMark && (
@@ -166,7 +182,9 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
                         longitude={selectedMark.long}
                         onClose={() => setSelectedMark(null)}
                         closeOnClick={false}>
-                        <Card shadow="sm" padding="lg" radius="md" withBorder h={350}>
+
+
+                        <Card shadow="sm" padding="lg" radius="md" withBorder >
                             <Card.Section component="a" >
                                 <Image
                                     src={getImageScr(selectedMark.product_offer.image)}
