@@ -50,7 +50,7 @@ export default function LoginForm() {
     return (
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
             <Title order={2} ta="center" mt="md" mb={50}>
-                Добро пожаловать в RosZelt!
+                Добро пожаловать!
             </Title>
 
             <TextInput label="Пользователь" placeholder="user123" size="md" {...form.getInputProps('name')} />
@@ -66,7 +66,7 @@ export default function LoginForm() {
             <Text ta="center" mt="md">
                 Нет аккаунта?{' '}
                 <Anchor<'a'> href="/register" weight={700} onClick={(event) => { event.preventDefault(); router('/register') }}>
-                    Зарегестрируйте
+                    Зарегистрируйте
                 </Anchor>
             </Text>
         </form>

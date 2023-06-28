@@ -5,6 +5,7 @@ import ProductCardItem from '../components/UI/ProductCardItem/ProductCardItem';
 import { useCallback, useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { useSuppliersList } from '../api/suppliersList';
+import { useClasses } from '../api/Classes';
 
 
 export default function CatalogPage() {
@@ -19,13 +20,19 @@ export default function CatalogPage() {
         setPriceMax,
         setPriceMin,
         activePage,
-        setActivePage } = useProduct(3);
+        setActivePage,
+        selectedClasses,
+        setClasses,
+        selectedSuppliers,
+        setSelectedSuppliers } = useProduct(3);
 
-    const fetchCatalog = useCallback(fetching, [query_string, price_max, price_min, activePage]);
+    const fetchCatalog = useCallback(fetching, [query_string, price_max, price_min, activePage, selectedClasses, selectedSuppliers]);
 
 
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
+
+    const [openedClasses, { open: openClass, close: closeClass }] = useDisclosure(false);
 
     const { fetchSupplierList, data: supplierList } = useSuppliersList();
 
@@ -34,6 +41,7 @@ export default function CatalogPage() {
     useEffect(() => {
         fetchCatalog();
         fetchSupplierList();
+        fetchClasses()
     }, [])
 
     useEffect(() => {
@@ -42,13 +50,14 @@ export default function CatalogPage() {
     }, [activePage])
 
     useEffect(() => {
+        console.log(selectedClasses)
         fetchCatalog();
     }, [counter])
 
     const items = (
         <Stack>
             {
-                data.data.map(prod => <ProductCardItem product={prod} key={prod.id}></ProductCardItem>)
+                data.data.map(prod => <ProductCardItem product={prod} classes={prod.class_product.name} key={prod.id}></ProductCardItem>)
             }
         </Stack>
     )
@@ -63,7 +72,7 @@ export default function CatalogPage() {
         setPriceMin('')
         setPriceMax('');
         setActivePage(1);
-
+        setSelectedSuppliers([]);
         //console.log(price_max, price_min);
 
         //fetchCatalog();
@@ -76,6 +85,21 @@ export default function CatalogPage() {
         update(counter + 1);
         //fetchCatalog();
         close();
+    }
+
+    const { fetchClasses, classList } = useClasses();
+
+    const applyClasses = () => {
+        setActivePage(1);
+        update(counter + 1);
+        //fetchCatalog();
+        closeClass();
+    }
+
+    const dropClasses = () => {
+        setClasses([]);
+        update(counter + 1);
+        closeClass();
     }
 
     return (
@@ -129,7 +153,12 @@ export default function CatalogPage() {
                         <ScrollArea h={250} type='always'>
                             <Stack>
                                 {
-                                    supplierList.map((element) => <Checkbox label={element.name} key={element.id} />)
+                                    <Checkbox.Group value={selectedSuppliers} onChange={setSelectedSuppliers}>
+                                        {
+                                            supplierList.map((element) =>
+                                                <Checkbox label={element.name} key={element.id} value={element.id.toString()} />)
+                                        }
+                                    </Checkbox.Group>
                                 }
                             </Stack>
                         </ScrollArea>
@@ -139,8 +168,27 @@ export default function CatalogPage() {
                 </ScrollArea>
             </Drawer>
 
-            <Flex align={'center'} direction="row" gap='md'>
+            <Drawer
+                opened={openedClasses}
+                onClose={closeClass}
+                title="Классы компонентов"
+                overlayProps={{ opacity: 0.5, blur: 4 }}
+                position='left'
+            >
+                <Stack>
+                    <Checkbox.Group value={selectedClasses} onChange={setClasses}>
+                        {
+                            classList.map((class_comp) => (
+                                <Checkbox key={class_comp.id} label={class_comp.name} pb={'5px'} value={class_comp.id.toString()}></Checkbox>))
+                        }
+                    </Checkbox.Group>
+                    <Button onClick={applyClasses} disabled={isLoading}>Применить фильр</Button>
+                    <Button onClick={dropClasses} disabled={isLoading}>Сбросить фильт</Button>
+                </Stack>
+            </Drawer>
 
+            <Flex align={'center'} direction="row" gap='md'>
+                <Button variant="filled" onClick={openClass}>Классы компонентов</Button>
                 <TextInput placeholder='Search'
                     value={query_string}
                     onChange={(e) => setQuery(e.target.value)}

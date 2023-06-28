@@ -92,7 +92,7 @@ export default function SupplierCatalog() {
             <th><ActionIcon onClick={() => router(`/product/${element.product_id}`)}><IconExternalLink></IconExternalLink></ActionIcon></th>
             <td>{element.product.article}</td>
             <td><TableInput text={element.product.name} onChange={e => handleChange(element.product_id, 'name', e)}></TableInput></td>
-            <td>{element.product.class_id}</td>
+            <td>{element.product.class_product.name}</td>
             <td><TableInput text={element.stock.price.toString()} onChange={e => handleChange(element.product_id, 'price', e)}></TableInput></td>
             <td><TableInput text={element.stock.quantity.toString()} onChange={e => handleChange(element.product_id, 'quantity', e)}></TableInput></td>
             <td><ActionIcon onClick={() => handleDelete(inx, element.product_id)}><IconTrash color='red'></IconTrash></ActionIcon></td>
@@ -145,7 +145,7 @@ export default function SupplierCatalog() {
                         <tr>
                             <th></th>
                             <th>Артикул</th>
-                            <th>Товар</th>
+                            <th>Компонент</th>
                             <th>Категория</th>
                             <th>Цена</th>
                             <th>Количество</th>

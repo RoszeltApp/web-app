@@ -9,7 +9,7 @@ export const refresh = createAsyncThunk('refresh',
     async (_, thunlAPI) => {
 
         try {
-            const state = thunlAPI.getState();
+            const state = thunlAPI.getState() as any;
 
             console.log(state)
             const response = await axios.post<Tokens>(import.meta.env.VITE_API_ROOT + '/api/user/refresh', {}, {

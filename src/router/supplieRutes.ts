@@ -1,7 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
 import MainPage from "../pages/MainPage";
 import ProductCardPage from "../pages/ProductCardPage";
-import ProductBasketPage from "../pages/ProductsBacketPage";
 import SupplierCatalog from "../pages/SupplierCatalog";
 import { AppRoute } from "../types/Route";
 

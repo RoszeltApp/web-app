@@ -100,7 +100,7 @@ export default function RegisterForm() {
                 >
                     <Group mt="xs">
                         <Radio value='1' label="Поставщик" />
-                        <Radio value='2' label="Покупатель" />
+                        <Radio value='2' label="Организация" />
                     </Group>
 
 

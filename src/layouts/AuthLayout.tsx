@@ -10,7 +10,7 @@ const useStyles = createStyles((theme) => ({
         minHeight: '100vh',
         backgroundSize: 'cover',
         backgroundImage:
-            'url(https://sun9-4.userapi.com/impg/wZ6QuJyQ_-xH-KmA7yv6MXzHVewQ--dtqrKKRA/4J85PuEq3i4.jpg?size=1068x801&quality=96&sign=584fef2ec443302b4f018454fd6636bf&type=album)',
+            'url(https://sun9-12.userapi.com/impg/6fEqtmUyGq5v-lz1vSr8nGBP9kE5Sau-vfo2yg/0eZ_pzZdU5c.jpg?size=1280x853&quality=96&sign=8b0b44bcd9edcceff47bea0e4544f6e9&type=album)',
     },
 
     form: {

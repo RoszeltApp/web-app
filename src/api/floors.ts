@@ -1,4 +1,4 @@
-import { Floor, FloorResponse } from "../types/gis";
+import { FloorResponse } from "../types/gis";
 import { useState } from "react";
 import { useFetching } from "../hooks/useFetching";
 import api from "./api";

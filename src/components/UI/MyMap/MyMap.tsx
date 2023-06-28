@@ -4,7 +4,7 @@ import ReactMapGL, { Layer, MapLayerMouseEvent, Marker, Popup, Source } from 're
 import { ComponentLayerResponse, FloorResponse } from '../../../types/gis';
 import { usePoligoneLayer } from '../../../api/poligonLayer';
 import { useComponentsLayer } from '../../../api/componentsLayer';
-import { Badge, Button, Card, Group, Image, ScrollArea, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, Image, Stack, Text, Tooltip } from '@mantine/core';
 import {
     IconDevicesPc, IconTrash,
     IconRouter, IconDatabase,
@@ -13,6 +13,7 @@ import {
 } from '@tabler/icons-react';
 import { getImageScr } from '../ProductCardItem/ProductCardItem';
 import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 
 const TOKEN = 'pk.eyJ1IjoiZmxhc2hiYWNrMTIiLCJhIjoiY2t4ZnY3bzlpMGpndzJ2bnh3d2dzaXZjMiJ9.7uhYlLAyknBaL2OaHaRVfQ'
@@ -20,10 +21,11 @@ const TOKEN = 'pk.eyJ1IjoiZmxhc2hiYWNrMTIiLCJhIjoiY2t4ZnY3bzlpMGpndzJ2bnh3d2dzaX
 interface Props {
     selectedFloor: FloorResponse
     selectedComponent: string | undefined,
+    selectedLayers: string[],
 }
 
-export default function MyMap({ selectedFloor, selectedComponent }: Props) {
-    const [viewport, setViewport] = useState({
+export default function MyMap({ selectedFloor, selectedComponent, selectedLayers }: Props) {
+    const [viewport] = useState({
         latitude: 54.736736,
         longitude: 55.952719,
         zoom: 10,
@@ -110,7 +112,9 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
         IconRouter, IconDatabase,
         IconDeviceLaptop, IconDeviceDesktopAnalytics,
         IconPrinter, IconDeviceImac, IconSlideshow
-    }
+    } as any
+
+    const router = useNavigate()
 
     return (
         <div style={{ width: '100%', height: '100%' }}>
@@ -163,17 +167,19 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
                 )}
 
                 {selectedFloor && compList.length !== 0 && (
-                    compList.map((Mark) => {
-                        const CustomTag = components[Mark.product_offer.product.class_product.class_icon];
-                        return (
-                            <Marker latitude={Mark.lat} longitude={Mark.long} key={Mark.id} onClick={() => setSelectedMark(Mark)}>
-                                <Button variant='Subtle'>
-                                    <CustomTag></CustomTag>
+                    [...compList].filter(
+                        (Mark) => selectedLayers.indexOf(Mark.product_offer.product.class_product.name) !== -1).map((Mark) => {
 
-                                </Button>
-                            </Marker>
-                        )
-                    })
+                            const CustomTag = components[Mark.product_offer.product.class_product.class_icon];
+                            return (
+                                <Marker latitude={Mark.lat} longitude={Mark.long} key={Mark.id} onClick={() => setSelectedMark(Mark)}>
+                                    <Button variant='Subtle' c={'black'}>
+                                        <CustomTag сolor={'red'}></CustomTag>
+
+                                    </Button>
+                                </Marker>
+                            )
+                        })
 
                 )}
 
@@ -195,18 +201,19 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
                             </Card.Section>
 
                             <Stack pt={10}>
-                                <Title order={5}>{selectedMark.product_offer.product.name}</Title>
-                                <Text weight={500}>Предложение от </Text>
+                                <Tooltip label={selectedMark.product_offer.product.class_product.name}>
+                                    <Text size={'md'} lineClamp={3} fw={700}>{selectedMark.product_offer.product.name}</Text>
+                                </Tooltip>
+                                <Text weight={500}>Компонент от поставщика</Text>
+                                <Text weight={500} >Класс компонента: <Text weight={500} fw={700}>{selectedMark.product_offer.product.class_product.name}</Text></Text>
                             </Stack>
 
 
                             <Stack>
                                 <div>
+                                    <Text size={'md'}>Стоимость компонента</Text>
                                     <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
-                                        ${selectedMark.product_offer.stock.price}
-                                    </Text>
-                                    <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
-                                        Количество: {selectedMark.product_offer.stock.quantity}
+                                        ₽{selectedMark.product_offer.stock.price}
                                     </Text>
                                 </div>
 
@@ -231,6 +238,9 @@ export default function MyMap({ selectedFloor, selectedComponent }: Props) {
                                         })
                                     }}>
                                     Удалить
+                                </Button>
+                                <Button radius="xl" onClick={() => router(`/product/${selectedMark.product_offer.product_id}`)}>
+                                    Информация
                                 </Button>
                             </Stack>
                         </Card>

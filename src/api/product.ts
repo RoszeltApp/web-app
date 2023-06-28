@@ -17,6 +17,9 @@ export function useProduct(pageCount: number) {
     const [price_min, setPriceMin] = useState<number | "">(0);
     const [activePage, setActivePage] = useState(1);
 
+    const [selectedClasses, setClasses] = useState<string[]>([]);
+    const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
+
     const fetchCatalog = async () => {
         let params: any = {
             limit: pageCount,
@@ -25,6 +28,14 @@ export function useProduct(pageCount: number) {
         }
         if (price_max !== "") params = { ...params, price_max }
         if (price_min !== "") params = { ...params, price_min }
+
+        if (selectedClasses.length !== 0) {
+            params = { ...params, category: [...selectedClasses].join(',') }
+        }
+
+        if (selectedSuppliers.length !== 0) {
+            params = { ...params, suppliers: [...selectedSuppliers].join(',') }
+        }
 
 
         console.log(price_min, price_max, params)
@@ -54,6 +65,10 @@ export function useProduct(pageCount: number) {
         setPriceMax,
         price_min,
         setPriceMin,
+        selectedClasses,
+        setClasses,
+        selectedSuppliers,
+        setSelectedSuppliers
     };
 }
 
@@ -69,13 +84,13 @@ export function useCard(product_id: string) {
     const [data, setData] = useState(initialState);
     const fetchCard = async () => {
 
-    let params: any = {
-        product_id: product_id,
-    }
-           const response = await api.get<Product>('/api/product/card', {
+        let params: any = {
+            product_id: product_id,
+        }
+        const response = await api.get<Product>('/api/product/card', {
             params
         });
-        
+
         console.log(response)
         setData(response.data)
     }

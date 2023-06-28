@@ -1,6 +1,6 @@
-import { Button, Flex, Group, Modal, NativeSelect, Radio, ScrollArea, Select, Stack, Text } from "@mantine/core";
+import { Button, Checkbox, Flex, Group, Modal, Radio, ScrollArea, Select, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconSquarePlus } from "@tabler/icons-react";
+import { IconDatabase, IconDeviceDesktopAnalytics, IconDeviceImac, IconDeviceLaptop, IconDevicesPc, IconPrinter, IconRouter, IconSlideshow, IconSquarePlus, IconTrash } from "@tabler/icons-react";
 import AddPlaceForm from "../components/Forms/AddPlaceForm";
 import AddFloorForm from "../components/Forms/AddFloorForm";
 import { getAllFromDB } from "../hooks/indexedDB";
@@ -9,9 +9,12 @@ import { useEffect, useState } from "react";
 import { useBuildingsList } from "../api/buildings";
 import { useFloorsList } from "../api/floors";
 import MyMap from "../components/UI/MyMap/MyMap";
+import { useClasses } from "../api/Classes";
 
 
 export default function PlacementPage() {
+    const { fetchClasses, classList } = useClasses();
+
     const [placeFormOpened, { open: openPlace, close: closePlace }] = useDisclosure(false);
     const [floorFormOpened, { open: openFloor, close: closeFloor }] = useDisclosure(false);
 
@@ -21,12 +24,19 @@ export default function PlacementPage() {
     const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
     const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
 
-    const { buildings, setBuildings, fetching: fetchBuildings, error, isLoading: isBuildingsLoading } = useBuildingsList();
-    const { floors, setFloors, fetching: fetchFloors, isLoading: isFloorsLoading } = useFloorsList();
+    const { buildings, fetching: fetchBuildings } = useBuildingsList();
+    const { floors, fetching: fetchFloors } = useFloorsList();
+
+    const [selected_layers_comp, setLayerComp] = useState<string[]>([])
+
+    useEffect(() => {
+        setLayerComp([...classList].map((e) => e.name))
+    }, [classList])
 
     useEffect(() => {
         fetchProducts()
         fetchBuildings()
+        fetchClasses()
     }, [])
 
     useEffect(() => {
@@ -63,6 +73,14 @@ export default function PlacementPage() {
             });
     };
 
+    const components = {
+        IconDevicesPc, IconTrash,
+        IconRouter, IconDatabase,
+        IconDeviceLaptop, IconDeviceDesktopAnalytics,
+        IconPrinter, IconDeviceImac, IconSlideshow
+    } as any
+
+
     return (
         <>
             <Modal opened={placeFormOpened} onClose={closePlace} title="Добавление помещения" size='xl'>
@@ -74,10 +92,38 @@ export default function PlacementPage() {
             </Modal>
 
             <Flex direction={"row"}>
+                <Flex w={'450px'} h={'100%'} pl={50} pb={50} direction={'column'}>
+                    <Text fw={700}>Условные обозначения:</Text>
+                    <Group position="apart"><div>Полы</div><div style={{ width: '30px', height: '10px', backgroundColor: '#4EED72' }}></div></Group>
+                    <Group position="apart"><div>Двери</div><div style={{ width: '30px', height: '10px', backgroundColor: '#FF00D1' }}></div> </Group>
+                    <Group position="apart"><div>Фундамент</div><div style={{ width: '30px', height: '10px', backgroundColor: '#F36909' }}></div> </Group>
+                    <Group position="apart"><div>Внутр. стены</div><div style={{ width: '30px', height: '10px', backgroundColor: '#DC3965' }}></div></Group>
+                    <Group position="apart"><div>кабинеты</div><div style={{ width: '30px', height: '10px', backgroundColor: '#EED274' }}></div></Group>
+                    <Group position="apart"><div>Лестницы</div><div style={{ width: '30px', height: '10px', backgroundColor: '#AD489C' }}></div></Group>
+                    <Group position="apart"><div>Внеш. Стены</div><div style={{ width: '30px', height: '10px', backgroundColor: '#DC3965' }}></div></Group>
+                    <Group position="apart"><div>Окна</div><div style={{ width: '30px', height: '10px', backgroundColor: '#35ABD7' }}></div></Group>
+
+                    <Text fw={700}>Слои компонентов:</Text>
+                    <Checkbox.Group value={selected_layers_comp} onChange={setLayerComp}>
+                        {
+                            classList.map((class_comp) => {
+                                const CustomTag = components[class_comp.class_icon];
+                                return (
+                                    <Group position="apart" noWrap={true}>
+                                        <Checkbox key={class_comp.id} label={class_comp.name} pb={'5px'} value={class_comp.name}></Checkbox>
+                                        <CustomTag ></CustomTag>
+                                    </Group>
+                                )
+                            })
+                        }
+                    </Checkbox.Group>
+
+                </Flex>
                 <Flex w={"100%"} h={'calc(100vh - 110px)'} pl={50} pb={50}>
                     <MyMap
                         selectedFloor={[...floors].filter(e => e.id.toString() === selectedFloor)[0]}
                         selectedComponent={selectedProduct}
+                        selectedLayers={selected_layers_comp}
                     />
                 </Flex>
                 <Flex w={"500px"} h={'100%'} pl={"md"} pr={"xl"}>
@@ -88,7 +134,7 @@ export default function PlacementPage() {
                                 <Select data={[...buildings].map(build => {
                                     return { value: build.id.toString(), label: build.name }
                                 })}
-                                    w={"250px"}
+
                                     value={selectedBuilding}
                                     onChange={setSelectedBuilding}>
 
@@ -106,7 +152,7 @@ export default function PlacementPage() {
                                             label: f.name
                                         }
                                     })}
-                                    w={"250px"}
+
                                     onChange={setSelectedFloor}
                                     value={selectedFloor}
                                 ></Select>

@@ -87,12 +87,9 @@ export default function WelcomePage() {
                 zIndex={0}
             />
             <Container className={classes.container}>
-                <Title className={classes.title}>Ищешь как продать или где купить?</Title>
+                <Title className={classes.title}>Выпускная квалификационная работа</Title>
                 <Text className={classes.description} size="xl" mt="xl">
-                    Данный сервис предоставляет возможность пользователю быть как покупателем:
-                    приобретать и проектировать размещение товаров компютерной инфраструктуры в о
-                    дном и том же месте, так и поставщиком: иметь возможность загружать свои товары и принимать заказы.
-                    Предложения поставщиков, цены, информация по складам и многое другое вы можете увидеть, войдя в систему.
+                    Выполнил: ст. гр. ИСТ-412 Васильев Т.А.
                 </Text>
 
                 <Button variant="gradient" size="xl" radius="xl" className={classes.control} onClick={handleClick}>

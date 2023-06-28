@@ -40,7 +40,6 @@ export default function AccountHeaderMenu() {
     const [userMenuOpened, setUserMenuOpened] = useState(false);
 
     const user = useAppSelector(state => state.user);
-    const image = 'https://sun9-7.userapi.com/impg/GPYr61C4eexBPAlcPfFDfZKNUFpHs9kl_28_QA/SWUK-6p3Xpk.jpg?size=1615x2160&quality=95&sign=e963ba10b4bbf31f74be14bae0d81e82&type=album';
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dispatch = useAppDispatch();
     const route = useNavigate()
@@ -64,7 +63,7 @@ export default function AccountHeaderMenu() {
                     className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
                 >
                     <Group spacing={7}>
-                        <Avatar src={image} alt={user.name} radius="xl" size={20} />
+                        <Avatar alt={user.name} radius="xl" size={30} />
                         <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
                             {user.name}
                         </Text>

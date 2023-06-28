@@ -7,7 +7,13 @@ export type Product = {
     id: number,
     class_id: number | null,
     brand: string | null,
-    mapping: Offer[]
+    mapping: Offer[],
+    class_product: {
+        id: number,
+        class_icon: string,
+        class_params: null,
+        name: string
+    }
 }
 
 export type ProductResponse = {
@@ -23,13 +29,19 @@ export type SupplierProduct = {
         name: string,
         article: string,
         id: number,
-        class_id: number | null
+        class_id: number | null,
+        class_product: {
+            id: string,
+            class_icon: string,
+            class_params: null,
+            name: string
+        }
     },
     stock: {
         quantity: number,
         price: number,
         id: number
-    }
+    },
 }
 
 export type SupplierProductResponse = {

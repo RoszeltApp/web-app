@@ -1,6 +1,5 @@
-import { Button, Flex, Stack, TextInput } from "@mantine/core";
+import { Button, Flex, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useFetching } from "../../hooks/useFetching";
 import { useAddBuilding } from "../../api/buildings";
 
 interface FormType {
@@ -9,7 +8,7 @@ interface FormType {
 }
 
 export default function AddPlaceForm({ onSubmit }: { onSubmit: () => void }) {
-    const { fetching, isLoading, error } = useAddBuilding()
+    const { fetching } = useAddBuilding()
     const form = useForm<FormType>({
         initialValues: {
             name: "",

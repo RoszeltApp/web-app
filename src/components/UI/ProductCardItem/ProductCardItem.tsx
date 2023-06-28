@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 interface FormatProps {
-    product: Product
+    product: Product,
+    classes: string
 }
 
 export function getImageScr(image: string | null) {
@@ -20,7 +21,7 @@ export function getImageScr(image: string | null) {
     }
 }
 
-export default function ProductCardItem({ product }: FormatProps) {
+export default function ProductCardItem({ product, classes }: FormatProps) {
 
     const handleAddToBasket = (offer: Offer) => {
         if (offer) {
@@ -57,7 +58,7 @@ export default function ProductCardItem({ product }: FormatProps) {
 
                 <Group position="apart" mt="md" mb="xs">
                     <Badge color="pink" variant="light">
-                        On Sale
+                        {classes}
                     </Badge>
                     <Text weight={500}>Предложение от {offer.user.name}</Text>
                 </Group>
@@ -66,7 +67,7 @@ export default function ProductCardItem({ product }: FormatProps) {
                 <Stack>
                     <div>
                         <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
-                            ${offer.stock.price}
+                            Цена: {offer.stock.price} ₽
                         </Text>
                         <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
                             Количество: {offer.stock.quantity}
