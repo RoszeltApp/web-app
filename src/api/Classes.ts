@@ -12,7 +12,6 @@ export function useClasses() {
     const { fetching: fetchClasses } = useFetching(async () => {
         const response = await api.get<ClassComp[]>('/api/product/classes');
         setClassList(response.data);
-        console.log(response)
     })
 
     return {

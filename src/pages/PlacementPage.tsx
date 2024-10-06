@@ -109,7 +109,7 @@ export default function PlacementPage() {
                             classList.map((class_comp) => {
                                 const CustomTag = components[class_comp.class_icon];
                                 return (
-                                    <Group position="apart" noWrap={true}>
+                                    <Group key={class_comp.id} position="apart" noWrap={true}>
                                         <Checkbox key={class_comp.id} label={class_comp.name} pb={'5px'} value={class_comp.name}></Checkbox>
                                         <CustomTag ></CustomTag>
                                     </Group>

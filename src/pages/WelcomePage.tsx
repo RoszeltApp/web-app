@@ -89,7 +89,7 @@ export default function WelcomePage() {
             <Container className={classes.container}>
                 <Title className={classes.title}>Выпускная квалификационная работа</Title>
                 <Text className={classes.description} size="xl" mt="xl">
-                    Выполнил: ст. гр. ИСТ-412 Васильев Т.А.
+                    Выполнил: ст. гр. ИСТ-412 Фархутдинов А.Т.
                 </Text>
 
                 <Button variant="gradient" size="xl" radius="xl" className={classes.control} onClick={handleClick}>

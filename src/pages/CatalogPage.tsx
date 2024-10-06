@@ -141,7 +141,7 @@ export default function CatalogPage() {
                         />
                         <NativeSelect
                             data={[
-                                { value: 'default', label: 'По умолчаеию' },
+                                { value: 'default', label: 'По умолчанию' },
                                 { value: 'asc', label: 'Дешевле' },
                                 { value: 'desc', label: 'Дороже' }
                             ]}
@@ -162,8 +162,8 @@ export default function CatalogPage() {
                                 }
                             </Stack>
                         </ScrollArea>
-                        <Button onClick={applyFilters} disabled={isLoading}>Применить фильр</Button>
-                        <Button onClick={dropFilters} disabled={isLoading}>Сбросить фильт</Button>
+                        <Button onClick={applyFilters} disabled={isLoading}>Применить фильтр</Button>
+                        <Button onClick={dropFilters} disabled={isLoading}>Сбросить фильтр</Button>
                     </Stack>
                 </ScrollArea>
             </Drawer>
@@ -182,8 +182,8 @@ export default function CatalogPage() {
                                 <Checkbox key={class_comp.id} label={class_comp.name} pb={'5px'} value={class_comp.id.toString()}></Checkbox>))
                         }
                     </Checkbox.Group>
-                    <Button onClick={applyClasses} disabled={isLoading}>Применить фильр</Button>
-                    <Button onClick={dropClasses} disabled={isLoading}>Сбросить фильт</Button>
+                    <Button onClick={applyClasses} disabled={isLoading}>Применить фильтр</Button>
+                    <Button onClick={dropClasses} disabled={isLoading}>Сбросить фильтр</Button>
                 </Stack>
             </Drawer>
 

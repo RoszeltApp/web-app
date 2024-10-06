@@ -24,7 +24,7 @@ export default function LoginForm() {
     const form = useForm({
         initialValues,
         validate: {
-            name: (value) => value.length > 3 ? null : 'Не может быть такого имени',
+            name: (value) => value.length >= 3 ? null : 'Не может быть такого имени',
             password: (value) => value.length >= 3 ? null : 'Пароль слишком короткий'
         }
     })

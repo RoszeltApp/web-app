@@ -49,10 +49,11 @@ export default function ProductCardItem({ product, classes }: FormatProps) {
             <Card shadow="sm" padding="lg" radius="md" withBorder h={400}>
                 <Card.Section component="a">
                     <Image
-                        src={getImageScr(offer.image)}
+                        src={offer.image ? getImageScr(offer.image) : "https://placehold.co/600x400?text=Image"}
                         height={160}
-                        alt="Norway"
+                        alt="Image"
                         fit="fill"
+
                     />
                 </Card.Section>
 
